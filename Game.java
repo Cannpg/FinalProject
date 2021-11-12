@@ -11,10 +11,11 @@ public class Game{
   Random r = new Random();
   double rng = r.nextDouble();
 
-  //create ArrayList for each Pool
-  ArrayList<Object> Category1 = new ArrayList<Object>();
-  ArrayList<Object> Category2 = new ArrayList<Object>();
-  ArrayList<Object> Category3 = new ArrayList<Object>();
+  //Scanner for user input
+  Scanner s = new Scanner(System.in);
+
+  //create ArrayList for each question
+  ArrayList<Question> QuestionList = new ArrayList<Question>();
 
   //r/w operations
   void createQuestionObjects(){
@@ -33,19 +34,10 @@ public class Game{
           int qPointValue = Integer.parseInt(reader.readLine());
           String qCategory = reader.readLine();
 
-          // System.out.println(qName);
-          // System.out.println(qAnswer1);
-          // System.out.println(qAnswer2);
-          // System.out.println(qAnswer3);
-          // System.out.println(qAnswer4);
-          // System.out.println(qCorrectAnswer);
-          // System.out.println(qPointValue);
-          // System.out.println(qCategory);
+          //use Constructor to create Question objects
+          Question q = new Question(qName, qAnswer1, qAnswer2, qAnswer3, qAnswer4, qCorrectAnswer, qPointValue, qCategory);
 
-          Question q1 = new Question(qName, qAnswer1, qAnswer2, qAnswer3, qAnswer4, qCorrectAnswer, qPointValue, qCategory);
-
-          //System.out.println(q1);
-          Category1.add(q1);   
+          QuestionList.add(q);   
         }
 
         reader.close();
@@ -53,5 +45,32 @@ public class Game{
     catch (IOException exception) {
     System.out.println("An error occurred: " + exception);
     }
+  }
+
+  void Question1(){
+    Question q1 = QuestionList.get(0);
+    System.out.println(q1.qName);
+    System.out.println("1: " + q1.qAnswer1);
+    System.out.println("2: " + q1.qAnswer2);
+    System.out.println("3: " + q1.qAnswer3);
+    System.out.println("4: " + q1.qAnswer4);
+    System.out.println("\nWhich is the correct answer? (Type in the number of the answer you believe is correct)");
+    int userGuess = s.nextInt();
+
+  //while loop to allow multiple guesses
+    while(userGuess != q1.qCorrectAnswer){
+      //if the guess is outside of 1-4 throw error
+      if(userGuess > 4 || userGuess < 1){
+        while(userGuess > 4 || userGuess < 1){
+          System.out.println("Please enter a number between 1 and 4.");
+          userGuess = s.nextInt();
+      }
+      //if guess is within 1-4, but wrong, ask to try again
+      //we could do something like reducing the number of points earned for each failed attempt
+      System.out.println("That's incorrect! Please try again.");
+      userGuess = s.nextInt();
+    }}
+
+    System.out.println("Congratulations! That's correct! You have earned " + q1.qPointValue + " points!");
   }
 }
