@@ -6,9 +6,10 @@ import java.awt.event.*;
 
 public class Game implements ActionListener{
   //properties for each Game session
-  int gNumQuestions;
-  int gNumTurns;
   int gTotalScore = 0;
+  String currentAnswer = "";
+  int currentValue = 0;
+  int currentQuestion;
 
   //create RNG to determine questions
   Random r = new Random();
@@ -28,6 +29,7 @@ public class Game implements ActionListener{
   JButton btn4 = new JButton("4");
   JLabel statusMessage = new JLabel("Welcome to the game! Press the Question Button to begin!");
   JButton resetBtn = new JButton("Reset");
+  JLabel pointCounter = new JLabel("Current Points: " + gTotalScore);
 
   //r/w operations
   void createQuestionObjects(){
@@ -63,17 +65,18 @@ public class Game implements ActionListener{
   void QuestionX(int X){
     Question q1 = QuestionList.get(X);
     questionName.setText(q1.qName);
-    btn2.setText("1: " + q1.qAnswer1); //change to the button1.text and change the button1 actionListener to be ("1") so that we can still use the int to tell whether or not the user has selected the right answer.
+    btn1.setText("1: " + q1.qAnswer1); //change to the button1.text and change the button1 actionListener to be ("1") so that we can still use the int to tell whether or not the user has selected the right answer.
     btn2.setText("2: " + q1.qAnswer2);
     btn3.setText("3: " + q1.qAnswer3);
     btn4.setText("4: " + q1.qAnswer4);
     statusMessage.setText("Which is the correct answer?");
-
-    this.chkAnswer("1", String.valueOf(q1.qCorrectAnswer), q1.qPointValue, X);
+    currentAnswer = String.valueOf(q1.qCorrectAnswer);
+    currentValue = q1.qPointValue;
+    currentQuestion = X;
   }
 
-  void chkAnswer(String ae, String Answer, int Points, int QuestionNum){
-    if(ae == (Answer)){
+  void chkAnswer(String SelectedAnswer, String Answer, int Points, int QuestionNum){
+    if(SelectedAnswer.equals(Answer)){
       statusMessage.setText("Congratulations! That's correct! You have earned " + Points + " points!");
       gTotalScore += Points;
 
@@ -171,6 +174,9 @@ public class Game implements ActionListener{
 
   Game(){
     JFrame frame = new JFrame("Welcome to the game!");
+    JFrame subframe1 = new JFrame();
+    JFrame subframe2 = new JFrame();
+    JFrame subframe3 = new JFrame();
     frame.setLayout(new FlowLayout());
     frame.setSize(400,400);
 
@@ -181,22 +187,49 @@ public class Game implements ActionListener{
     btn4.addActionListener(this);
     resetBtn.addActionListener(this);
 
-    frame.add(statusMessage);
-    frame.add(questionName);
-    frame.add(questionBtn);
-    frame.add(btn1);
-    frame.add(btn2);
-    frame.add(btn3);
-    frame.add(btn4);
-    frame.add(resetBtn);
+    frame.add(subframe1);
+    frame.add(subframe2);
+    frame.add(subframe3);
+
+    subframe1.add(statusMessage);
+    subframe2.add(questionName);
+    subframe1.add(questionBtn);
+    subframe2.add(btn1);
+    subframe2.add(btn2);
+    subframe2.add(btn3);
+    subframe2.add(btn4);
+    subframe3.add(resetBtn);
+    subframe3.add(pointCounter);
     
     frame.setVisible(true);
+    subframe1.setVisible(true);
+    subframe2.setVisible(true);
+    subframe3.setVisible(true);
   }
 
   public void actionPerformed(ActionEvent ae){
     if(ae.getActionCommand().equals("Click to get a question!")){
       this.createQuestionObjects();
       this.test();
+    }
+    else if(ae.getActionCommand().equals(btn1.getText())){
+      chkAnswer(btn1.getText().substring(0,1), currentAnswer, currentValue, currentQuestion);
+      System.out.println(currentAnswer);
+    }
+    else if(ae.getActionCommand().equals(btn2.getText())){
+      chkAnswer(btn2.getText().substring(0,1), currentAnswer, currentValue, currentQuestion);
+      System.out.println(currentAnswer);
+    }
+    else if(ae.getActionCommand().equals(btn3.getText())){
+      chkAnswer(btn3.getText().substring(0,1), currentAnswer, currentValue, currentQuestion);
+      System.out.println(currentAnswer);
+    }
+    else if(ae.getActionCommand().equals(btn4.getText())){
+      chkAnswer(btn4.getText().substring(0,1), currentAnswer, currentValue, currentQuestion);
+      System.out.println(currentAnswer);
+    }
+    else if(ae.getActionCommand().equals("Reset")){
+      this.resetScore();
     }
   }
 }
