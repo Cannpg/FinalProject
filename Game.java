@@ -1,7 +1,6 @@
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.SwingConstants;
 import java.awt.*; 
 import java.awt.event.*; 
 
@@ -19,6 +18,16 @@ public class Game implements ActionListener{
 
   //create ArrayList for each question
   ArrayList<Question> QuestionList = new ArrayList<Question>();
+
+  //add Swing stuff here so that it can be accessed by other methods
+  JLabel questionName = new JLabel("");
+  JButton questionBtn = new JButton("Click to get a question!");
+  JButton btn1 = new JButton("1");
+  JButton btn2 = new JButton("2");
+  JButton btn3 = new JButton("3");
+  JButton btn4 = new JButton("4");
+  JLabel statusMessage = new JLabel("Welcome to the game! Press the Question Button to begin!");
+  JButton resetBtn = new JButton("Reset");
 
   //r/w operations
   void createQuestionObjects(){
@@ -53,35 +62,26 @@ public class Game implements ActionListener{
 
   void QuestionX(int X){
     Question q1 = QuestionList.get(X);
-    System.out.println(q1.qName);
-    System.out.println("1: " + q1.qAnswer1); //change to the button1.text and change the button1 actionListener to be ("1") so that we can still use the int to tell whether or not the user has selected the right answer.
-    System.out.println("2: " + q1.qAnswer2);
-    System.out.println("3: " + q1.qAnswer3);
-    System.out.println("4: " + q1.qAnswer4);
-    System.out.println("\nWhich is the correct answer? (Type in the number of the answer you believe is correct)");
+    questionName.setText(q1.qName);
+    btn2.setText("1: " + q1.qAnswer1); //change to the button1.text and change the button1 actionListener to be ("1") so that we can still use the int to tell whether or not the user has selected the right answer.
+    btn2.setText("2: " + q1.qAnswer2);
+    btn3.setText("3: " + q1.qAnswer3);
+    btn4.setText("4: " + q1.qAnswer4);
+    statusMessage.setText("Which is the correct answer?");
 
-    //intead of using the scanner, we use the button click event's actionListener to tell use what the input is
-    int userGuess = s.nextInt();
+    this.chkAnswer("1", String.valueOf(q1.qCorrectAnswer), q1.qPointValue, X);
+  }
 
-    //while loop to allow multiple guesses
-    while(userGuess != q1.qCorrectAnswer){
-      //this is irrelevant for the buttons
-      //if the guess is outside of 1-4 throw error
-      while(userGuess > 4 || userGuess < 1){
-        System.out.println("Please enter a number between 1 and 4.");
-        userGuess = s.nextInt();
-      }
-      //if guess is within 1-4, but wrong, ask to try again
-      //we could do something like reducing the number of points earned for each failed attempt
-      System.out.println("That's incorrect! Please try again.");
-      userGuess = s.nextInt();
+  void chkAnswer(String ae, String Answer, int Points, int QuestionNum){
+    if(ae == (Answer)){
+      statusMessage.setText("Congratulations! That's correct! You have earned " + Points + " points!");
+      gTotalScore += Points;
+
+      QuestionList.remove(QuestionNum);
     }
-
-    //change the dialogue label to be this
-    System.out.println("Congratulations! That's correct! You have earned " + q1.qPointValue + " points!");
-    gTotalScore += q1.qPointValue;
-
-    QuestionList.remove(X);
+    else{
+      statusMessage.setText("That's incorrect! Please try again.");
+    }
   }
 
   void resetScore(){
@@ -173,14 +173,6 @@ public class Game implements ActionListener{
     JFrame frame = new JFrame("Welcome to the game!");
     frame.setLayout(new FlowLayout());
     frame.setSize(400,400);
-    JLabel questionName = new JLabel("");
-    JButton questionBtn = new JButton("Click to get a question!");
-    JButton btn1 = new JButton("");
-    JButton btn2 = new JButton("");
-    JButton btn3 = new JButton("");
-    JButton btn4 = new JButton("");
-    JLabel statusMessage = new JLabel("Welcome to the game! Press the Question Button to begin!");
-    JButton resetBtn = new JButton("Reset");
 
     questionBtn.addActionListener(this);
     btn1.addActionListener(this);
@@ -203,13 +195,8 @@ public class Game implements ActionListener{
 
   public void actionPerformed(ActionEvent ae){
     if(ae.getActionCommand().equals("Click to get a question!")){
+      this.createQuestionObjects();
       this.test();
-    }
-    else if(ae.getActionCommand().equals("Play Again")){
-      
-    }
-    else{
-
     }
   }
 }
