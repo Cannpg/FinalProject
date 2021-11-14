@@ -21,12 +21,12 @@ public class Game implements ActionListener{
   ArrayList<Question> QuestionList = new ArrayList<Question>();
 
   //add Swing stuff here so that it can be accessed by other methods
-  JLabel questionName = new JLabel("");
+  JLabel questionName = new JLabel();
   JButton questionBtn = new JButton("Click to get a question!");
-  JButton btn1 = new JButton("1");
-  JButton btn2 = new JButton("2");
-  JButton btn3 = new JButton("3");
-  JButton btn4 = new JButton("4");
+  JButton btn1 = new JButton();
+  JButton btn2 = new JButton();
+  JButton btn3 = new JButton();
+  JButton btn4 = new JButton();
   JLabel statusMessage = new JLabel("Welcome to the game! Press the Question Button to begin!");
   JButton resetBtn = new JButton("Reset");
   JLabel pointCounter = new JLabel("Current Points: " + gTotalScore);
@@ -75,10 +75,19 @@ public class Game implements ActionListener{
     currentQuestion = X;
   }
 
+  //function to check for the correct answer
   void chkAnswer(String SelectedAnswer, String Answer, int Points, int QuestionNum){
+
     if(SelectedAnswer.equals(Answer)){
-      statusMessage.setText("Congratulations! That's correct! You have earned " + Points + " points!");
+      statusMessage.setText("That's correct! You have earned " + Points + " points!");
       gTotalScore += Points;
+      questionBtn.setText("Next Question");
+      pointCounter.setText("Current Points: " + gTotalScore);
+      
+      btn1.setEnabled(false);
+      btn2.setEnabled(false);
+      btn3.setEnabled(false);
+      btn4.setEnabled(false);
 
       QuestionList.remove(QuestionNum);
     }
@@ -87,10 +96,25 @@ public class Game implements ActionListener{
     }
   }
 
+//reset function
   void resetScore(){
+    btn1.setEnabled(false);
+    btn2.setEnabled(false);
+    btn3.setEnabled(false);
+    btn4.setEnabled(false);
+    btn1.setText("");
+    btn2.setText("");
+    btn3.setText("");
+    btn4.setText("");
+    statusMessage.setText("Welcome to the game! Press the Question Button to begin!");
+    questionName.setText("");
+    questionBtn.setText("Click to get a question!");
     gTotalScore = 0;
+    pointCounter.setText("Current Points: " + gTotalScore);
+    this.createQuestionObjects();
   }
 
+//I named it test, but this is the main function that pulls from the Question ArrayList and generates each question
   void test(){
     double rng = r.nextDouble();
 
@@ -167,18 +191,24 @@ public class Game implements ActionListener{
     else if(QuestionList.size() == 1){
       this.QuestionX(0);
     }
+    //"End of the game" function
     else if(QuestionList.size() == 0){
-      System.out.println("Congratulations! You've completed the game!");
+      statusMessage.setText("Congratulations! You've completed the game!");
+      btn1.setText("");
+      btn2.setText("");
+      btn3.setText("");
+      btn4.setText("");
+      questionName.setText("");
+      questionBtn.setText("");
     }
   }
 
+
+  //main constructor
   Game(){
     JFrame frame = new JFrame("Welcome to the game!");
-    JFrame subframe1 = new JFrame();
-    JFrame subframe2 = new JFrame();
-    JFrame subframe3 = new JFrame();
     frame.setLayout(new FlowLayout());
-    frame.setSize(400,400);
+    frame.setSize(600,400);
 
     questionBtn.addActionListener(this);
     btn1.addActionListener(this);
@@ -187,46 +217,54 @@ public class Game implements ActionListener{
     btn4.addActionListener(this);
     resetBtn.addActionListener(this);
 
-    frame.add(subframe1);
-    frame.add(subframe2);
-    frame.add(subframe3);
+    frame.add(statusMessage);
+    frame.add(questionName);
+    frame.add(questionBtn);
+    frame.add(btn1);
+    frame.add(btn2);
+    frame.add(btn3);
+    frame.add(btn4);
+    frame.add(resetBtn);
+    frame.add(pointCounter);
 
-    subframe1.add(statusMessage);
-    subframe2.add(questionName);
-    subframe1.add(questionBtn);
-    subframe2.add(btn1);
-    subframe2.add(btn2);
-    subframe2.add(btn3);
-    subframe2.add(btn4);
-    subframe3.add(resetBtn);
-    subframe3.add(pointCounter);
+    btn1.setEnabled(false);
+    btn2.setEnabled(false);
+    btn3.setEnabled(false);
+    btn4.setEnabled(false);
     
+    this.createQuestionObjects();
+
     frame.setVisible(true);
-    subframe1.setVisible(true);
-    subframe2.setVisible(true);
-    subframe3.setVisible(true);
   }
 
+  //actionlistener function
   public void actionPerformed(ActionEvent ae){
-    if(ae.getActionCommand().equals("Click to get a question!")){
-      this.createQuestionObjects();
+    //when you press the question button
+    if(ae.getActionCommand().equals(questionBtn.getText())){
       this.test();
+      btn1.setEnabled(true);
+      btn2.setEnabled(true);
+      btn3.setEnabled(true);
+      btn4.setEnabled(true);
     }
+    //else if for each button press. will check the button value (1-4) against the correct int
     else if(ae.getActionCommand().equals(btn1.getText())){
+      //I use a substring(0,1) because all I want from the answer text is the number at the beginning
       chkAnswer(btn1.getText().substring(0,1), currentAnswer, currentValue, currentQuestion);
-      System.out.println(currentAnswer);
+      //disabled the button after clicking to make sure that you can't click the right answer multiple times
+      btn1.setEnabled(false);
     }
     else if(ae.getActionCommand().equals(btn2.getText())){
       chkAnswer(btn2.getText().substring(0,1), currentAnswer, currentValue, currentQuestion);
-      System.out.println(currentAnswer);
+      btn2.setEnabled(false);
     }
     else if(ae.getActionCommand().equals(btn3.getText())){
       chkAnswer(btn3.getText().substring(0,1), currentAnswer, currentValue, currentQuestion);
-      System.out.println(currentAnswer);
+      btn3.setEnabled(false);
     }
     else if(ae.getActionCommand().equals(btn4.getText())){
       chkAnswer(btn4.getText().substring(0,1), currentAnswer, currentValue, currentQuestion);
-      System.out.println(currentAnswer);
+      btn4.setEnabled(false);
     }
     else if(ae.getActionCommand().equals("Reset")){
       this.resetScore();
