@@ -5,6 +5,7 @@ In Japanese culture, at what age is the "coming of age" celebration held?
 21
 2
 10
+false
 Culture
 What makes the Mosuo such a unique ethnic group in China?
 Atheist
@@ -13,6 +14,7 @@ No electricity
 Matriarchy
 4
 15
+false
 Culture
 In the MLB, what is the universally retired uniform number?
 2
@@ -21,6 +23,7 @@ In the MLB, what is the universally retired uniform number?
 24
 3
 10
+false
 Sports
 Esports, the official name of professional gaming, has a higher revenue than which American sports league?
 MLB
@@ -29,6 +32,7 @@ NBA
 All of the above combined
 4
 15
+false
 Sports
 What is the size of a nanometer?
 One thousandth of a meter
@@ -37,6 +41,7 @@ One millionth of a meter
 One thousandth of a centimeter
 3
 10
+false
 Science
 Relatively, how far is the surface of the Moon from the surface of the Earth?
 The radii of every planet in the solar system together
@@ -45,4 +50,5 @@ The radii of Jupiter and Saturn combined
 Half the radius of Jupiter
 1
 15
+false
 Science

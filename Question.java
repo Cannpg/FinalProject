@@ -7,6 +7,7 @@ public class Question{
   String qAnswer4;
   int qCorrectAnswer;
   int qPointValue;
+  boolean qAnswered;
   String qCategory;
 
   //Default constructor
@@ -18,11 +19,12 @@ public class Question{
     qAnswer4 = "";
     qCorrectAnswer = 0;
     qPointValue = 0;
+    qAnswered = false;
     qCategory = "";
   }
 
   //Customer constructor
-  Question(String newName, String newAnswer1, String newAnswer2, String newAnswer3, String newAnswer4, int correctAnswer, int newValue, String newCategory){
+  Question(String newName, String newAnswer1, String newAnswer2, String newAnswer3, String newAnswer4, int correctAnswer, int newValue, boolean newAnswered, String newCategory){
     qName = newName;
     qAnswer1 = newAnswer1;
     qAnswer2 = newAnswer2;
@@ -30,6 +32,7 @@ public class Question{
     qAnswer4 = newAnswer4;
     qCorrectAnswer = correctAnswer;
     qPointValue = newValue;
+    qAnswered = newAnswered;
     qCategory = newCategory;
   }
 
@@ -56,6 +59,9 @@ public class Question{
   public int getqPointValue() {
     return qPointValue;
   }
+  public boolean getqAnswered() {
+    return qAnswered;
+  }
   public String getqCategory() {
     return qCategory;
   }
@@ -81,6 +87,9 @@ public class Question{
   }
   public void setqPointValue(int qPointValue) {
     this.qPointValue = qPointValue;
+  }
+  public void setqAnswered(boolean qAnswered) {
+    this.qAnswered = qAnswered;
   }
   public void setqCategory(String qCategory) {
     this.qCategory = qCategory;
